@@ -62,6 +62,9 @@ endif
 " Remap leader to ','
 let mapleader = ','
 
+" Don't yank on paste
+xnoremap p P
+
 " ----------------------------------------- "
 " File Type settings    	   	    "
 " ----------------------------------------- "
