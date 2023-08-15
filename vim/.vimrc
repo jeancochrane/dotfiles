@@ -65,6 +65,9 @@ let mapleader = ','
 " Don't yank on paste
 xnoremap p P
 
+" Version of delete that does not yank
+xnoremap <leader>d "_d
+
 " ----------------------------------------- "
 " File Type settings    	   	    "
 " ----------------------------------------- "
