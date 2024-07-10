@@ -210,7 +210,69 @@ require("lazy").setup({
   },
   {
     "neovim/nvim-lspconfig",
-    ft = { "r", "rmd", "quarto", "python", "html", "css" },
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim"
+    },
+    ft = {
+      "bash", "sh",
+      "css", "scss", "less",
+      "dockerfile",
+      "gitcommit",
+      "json",
+      "html",
+      "lua",
+      "markdown",
+      "python",
+      "rmd", "quarto",
+      "r",
+      "rust",
+      "sql",
+      "terraform",
+      "yaml"
+    },
+    config = function()
+      require("mason").setup({
+        ui = {
+          border = "rounded",
+          width = 0.88,
+          height = 0.75
+        }
+      })
+      require("mason-lspconfig").setup({})
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+      local lspconfig = require("lspconfig")
+      lspconfig.bashls.setup({ capabilities = capabilities })
+      lspconfig.cssls.setup({ capabilities = capabilities })
+      lspconfig.dockerls.setup({ capabilities = capabilities })
+      lspconfig.docker_compose_language_service.setup({
+        capabilities = capabilities
+      })
+      lspconfig.html.setup({ capabilities = capabilities })
+      lspconfig.lua_ls.setup({ capabilities = capabilities })
+      lspconfig.pyright.setup({
+        capabilities = capabilities,
+        settings = {
+          pyright = {
+            disableOrganizeImports = true,
+            disableTaggedHints = true
+          },
+          python = {
+            analysis = {
+              diagnosticSeverityOverrides = {
+                reportUndefinedVariable = "none"
+              }
+            }
+          }
+        }
+      })
+      lspconfig.ruff.setup({ capabilities = capabilities })
+      lspconfig.terraformls.setup({ capabilities = capabilities })
+      lspconfig.yamlls.setup({ capabilities = capabilities })
+
+      -- Prettify the LSP info window
+      require("lspconfig.ui.windows").default_options.border = "rounded"
+    end
   },
   {
     "jose-elias-alvarez/null-ls.nvim",
@@ -377,21 +439,74 @@ require("lazy").setup({
     end
   },
   {
-    "williamboman/mason.nvim",
-    dependencies = {
-      { "williamboman/mason-lspconfig.nvim" }
+    "WhoIsSethDaniel/mason-tool-installer.nvim",
+    cmd = { "MasonToolsInstall", "MasonToolsUpdate" },
+    dependencies = { "neovim/nvim-lspconfig" },
+    opts = {
+      run_on_start = false,
+      ensure_installed = {
+        -- Language servers
+        "bashls",
+        "cssls",
+        "dockerls",
+        "docker_compose_language_service",
+        "html",
+        "lua_ls",
+        "pyright",
+        "terraform-ls",
+        "sqlls",
+        "yamlls",
+        -- Formatters
+        "ruff",
+        "jq",
+        "shfmt",
+        "sqlfluff",
+        "yamlfmt",
+        -- Linters
+        "actionlint",
+        "gitlint",
+        "hadolint",
+        "htmlhint",
+        "shellcheck",
+        "sqlfluff",
+        "stylelint",
+        "tflint",
+        "markdownlint",
+        "yamllint"
+      }
+    }
+  },
+  {
+    "mfussenegger/nvim-lint",
+    ft = {
+      "bash", "sh",
+      "css", "scss", "less",
+      "html",
+      "dockerfile",
+      "gitcommit",
+      "markdown",
+      "sql",
+      "terraform",
+      "yaml"
     },
     config = function()
-      require("mason").setup()
-      local mason_lspconfig = require("mason-lspconfig")
-      mason_lspconfig.setup({
-        ensure_installed = { "lua_ls", "pyright", "html", "cssls", "sqlls" }
-      })
-      mason_lspconfig.setup_handlers {
-        function (server_name) -- default handler
-            require("lspconfig")[server_name].setup {}
-        end,
+      require("lint").linters_by_ft = {
+        css = { "stylelint" },
+        html = { "htmlhint" },
+        dockerfile = { "hadolint" },
+        gitcommit = { "gitlint" },
+        less = { "stylelint" },
+        markdown = { "markdownlint" },
+        scss = { "stylelint" },
+        sh = { "shellcheck" },
+        sql = { "sqlfluff" },
+        terraform = { "tflint" },
+        yaml = { "actionlint", "yamllint" }
       }
     end,
   },
+  {
+      "Vimjas/vim-python-pep8-indent",
+      ft = "python"
+  }
 })
