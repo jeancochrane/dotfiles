@@ -43,8 +43,8 @@ imap jk <ESC>l
 autocmd InsertEnter,InsertLeave * set cul!
 
 " WSL yank support
-let s:clip = '/mnt/c/Windows/System32/clip.exe'
-if executable(s:clip)
+if executable('/mnt/c/Windows/System32/clip.exe')
+    let s:clip = '/mnt/c/Windows/System32/clip.exe'
     let g:clipboard = {
         \   'name': 'WslClipboard',
         \   'copy': {
