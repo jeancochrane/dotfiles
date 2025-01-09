@@ -299,9 +299,111 @@ require("lazy").setup({
     end
   },
   {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    version = "*",
+    branch = "main",
+    cmd = { "CopilotChatToggle", "CopilotChatPrompt" },
+    dependencies = {
+      { "zbirenbaum/copilot.lua" },
+      { "nvim-lua/plenary.nvim" }
+    },
+    keys = {
+      {
+        "?",
+        function()
+          require("CopilotChat").toggle()
+        end,
+        mode = { "n", "x" },
+        desc = "Toggle Copilot chat"
+      },
+      {
+        "<leader>aa",
+        function()
+          require("CopilotChat").select_agent()
+        end,
+        mode = { "n", "x" },
+        desc = "Select agent"
+      },
+      {
+        "<leader>?",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.fzflua").pick(actions.prompt_actions())
+        end,
+        mode = { "n", "x" },
+        desc = "Pick Copilot prompt",
+        silent = true
+      },
+      {
+        "<leader>ap",
+        function()
+          local actions = require("CopilotChat.actions")
+          require("CopilotChat.integrations.fzflua").pick(actions.prompt_actions())
+        end,
+        mode = { "n", "x" },
+        desc = "Pick prompt",
+        silent = true
+      },
+      {
+        "<leader>am",
+        function()
+          require("CopilotChat").select_model()
+        end,
+        mode = { "n", "x" },
+        desc = "Pick model",
+        silent = true
+      }
+    },
+    config = function()
+      local chat = require("CopilotChat")
+      chat.setup({
+        model = "claude-3.5-sonnet",
+        log_level = "warn",
+        show_folds = false,
+        show_help = false,
+        auto_follow_cursor = false,
+        auto_insert_mode = false,
+        chat_autocomplete = false,
+        highlight_selection = true,
+        window = {
+          layout = "vertical",
+        },
+        mappings = {
+          close = { normal = "<leader>jk" },
+          reset = { normal = "<leader>ax", insert = "" },
+          submit_prompt = { normal = "<leader><cr>", insert = "<leader><cr>" },
+          accept_diff = { normal = "<leader>ay", insert = "" },
+          yank_diff = { normal = "<leader>aY", insert = "" },
+          show_diff = { normal = "<leader>ad", insert = "" },
+          show_context = { normal = "<leader>ac", insert = "" },
+          show_help = { normal = "<leader>ah", insert = "" },
+          show_info = { normal = "<leader>ai", insert = "" },
+          toggle_sticky = { normal = "" },
+          jump_to_diff = { normal = "" },
+          quickfix_diffs = { normal = "" },
+        }
+      })
+    end
+  },
+  {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
     dependencies = {
+      {
+        "zbirenbaum/copilot.lua",
+        version = "*",
+        opts = {
+          suggestion = { enabled = false },
+          panel = { enabled = false }
+        }
+      },
+      {
+        "zbirenbaum/copilot-cmp",
+        version = "*",
+        config = function()
+          require("copilot_cmp").setup()
+        end
+      },
       {
         "L3MON4D3/LuaSnip",
         version = "2.*",
@@ -332,6 +434,131 @@ require("lazy").setup({
       local luasnip = require("luasnip")
       require("luasnip.loaders.from_vscode").lazy_load()
 
+      -- Add custom Copilot Chat completion
+      -- See https://github.com/CopilotC-Nvim/CopilotChat.nvim/pull/507
+      local chat = require("CopilotChat")
+      local Source = {}
+
+      -- Override the default context descriptions (they aren't useful)
+      local context_description = {
+        buffer = "Include current buffer",
+        buffers = "Include all open buffers",
+        file = "Include contents of provided file.\nRequires a filename",
+        files = [[
+        Include all non-hidden files.
+        :list (default) Only includes file names
+        :full Includes file contents
+        ]],
+        git = [[
+        Include git diff.
+        :unstaged (default) Include unstaged changes
+        :staged Include only staged changes
+        ]],
+        url = "Include URL content in context.\nRequires URL input",
+        register = "Include register contents.\nDefault is `+` (clipboard)"
+      }
+
+      --- Modified completion items that doesn"t load agents/models (increases speed)
+      --- https://github.com/CopilotC-Nvim/CopilotChat.nvim/blob/1fe19d1fdbf9edcda8bad9b7b2d5e11aa95c1672/lua/CopilotChat/init.lua#L494
+      ---@param callback function(table)
+      local function complete_items(callback)
+        local prompts_to_use = chat.prompts()
+        local items = {}
+
+        for name, prompt in pairs(prompts_to_use) do
+          local kind = ""
+          local info = ""
+          if prompt.prompt then
+            kind = "user"
+            info = prompt.prompt
+          elseif prompt.system_prompt then
+            kind = "system"
+            info = prompt.system_prompt
+          end
+
+          items[#items + 1] = {
+            word = "/" .. name,
+            kind = kind,
+            info = info,
+            menu = prompt.description or "",
+            icase = 1,
+            dup = 0,
+            empty = 0,
+          }
+        end
+
+        for name, value in pairs(chat.config.contexts) do
+          local additional_info = context_description[name] or ""
+          items[#items + 1] = {
+            word = "#" .. name,
+            kind = "context",
+            menu = (additional_info ~= "" and additional_info or value.description or ""),
+            icase = 1,
+            dup = 0,
+            empty = 0,
+          }
+        end
+
+        table.sort(items, function(a, b)
+          if a.kind == b.kind then
+            return a.word < b.word
+          end
+          return a.kind < b.kind
+        end)
+
+        callback(items)
+      end
+
+      function Source:get_trigger_characters()
+        return chat.complete_info().triggers
+      end
+
+      function Source:get_keyword_pattern()
+        return chat.complete_info().pattern
+      end
+
+      function Source:complete(params, callback)
+        complete_items(function(items)
+          items = vim.tbl_map(function(item)
+            return {
+              label = item.word,
+              kind = cmp.lsp.CompletionItemKind.Keyword,
+              documentation = {
+                kind = "markdown",
+                value = (item.menu ~= "" and item.menu or item.info or "")
+              },
+            }
+          end, items)
+
+          local prefix = string.lower(params.context.cursor_before_line:sub(params.offset))
+
+          callback({
+            items = vim.tbl_filter(function(item)
+              return vim.startswith(item.label:lower(), prefix:lower())
+            end, items),
+          })
+        end)
+      end
+
+      ---@param completion_item lsp.CompletionItem
+      ---@param callback fun(completion_item: lsp.CompletionItem|nil)
+      function Source:execute(completion_item, callback)
+        callback(completion_item)
+        vim.api.nvim_set_option_value("buflisted", false, { buf = 0 })
+      end
+
+      local M = {}
+
+      --- Setup the nvim-cmp source for copilot-chat window
+      function M.setup()
+        cmp.register_source("copilot-chat", Source)
+        cmp.setup.filetype("copilot-chat", {
+          sources = {
+            { name = "copilot-chat" },
+          },
+        })
+      end
+
       cmp.setup.cmdline("/", {
         mapping = cmp.mapping.preset.cmdline(),
         sources = {
@@ -353,6 +580,8 @@ require("lazy").setup({
           local context = require 'cmp.config.context'
           if vim.api.nvim_get_mode().mode == 'c' then
             return true
+          elseif vim.bo.buftype == "prompt" then
+            return false
           else
             return not context.in_treesitter_capture("comment")
               and not context.in_syntax_group("Comment")
@@ -406,6 +635,15 @@ require("lazy").setup({
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
         },
+        -- https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations
+        formatting = {
+          format = lspkind.cmp_format({
+            mode = "symbol_text",
+            maxwidth = 50,
+            ellipsis_char = "...",
+            symbol_map = { Copilot = "" }
+          })
+        }
       })
 
       -- Toggle autocompletion
