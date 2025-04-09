@@ -274,30 +274,30 @@ require("lazy").setup({
       require("lspconfig.ui.windows").default_options.border = "rounded"
     end
   },
-  {
-    "jose-elias-alvarez/null-ls.nvim",
-    config = function()
-      local null_ls = require("null-ls")
-      null_ls.setup({ default_timeout = 20000 })
-      null_ls.register({
-        null_ls.builtins.code_actions.shellcheck,
-        null_ls.builtins.diagnostics.shellcheck,
-        null_ls.builtins.formatting.shfmt.with({
-          extra_args = { "-i", "4", "-bn", "-sr", "-p", "-ci" }
-        })
-      })
-      null_ls.register({
-        null_ls.builtins.diagnostics.sqlfluff,
-        null_ls.builtins.formatting.sqlfluff
-      })
-      null_ls.register({
-        null_ls.builtins.formatting.prettier,
-        null_ls.builtins.formatting.autopep8,
-        null_ls.builtins.formatting.styler,
-        null_ls.builtins.formatting.jq
-      })
-    end
-  },
+  -- {
+  --   "jose-elias-alvarez/null-ls.nvim",
+  --   config = function()
+  --     local null_ls = require("null-ls")
+  --     null_ls.setup({ default_timeout = 20000 })
+  --     null_ls.register({
+  --       null_ls.builtins.code_actions.shellcheck,
+  --       null_ls.builtins.diagnostics.shellcheck,
+  --       null_ls.builtins.formatting.shfmt.with({
+  --         extra_args = { "-i", "4", "-bn", "-sr", "-p", "-ci" }
+  --       })
+  --     })
+  --     null_ls.register({
+  --       null_ls.builtins.diagnostics.sqlfluff,
+  --       null_ls.builtins.formatting.sqlfluff
+  --     })
+  --     null_ls.register({
+  --       null_ls.builtins.formatting.prettier,
+  --       null_ls.builtins.formatting.autopep8,
+  --       null_ls.builtins.formatting.styler,
+  --       null_ls.builtins.formatting.jq
+  --     })
+  --   end
+  -- },
   {
     "hrsh7th/nvim-cmp",
     event = { "InsertEnter", "CmdlineEnter" },
