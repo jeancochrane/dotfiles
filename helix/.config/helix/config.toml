@@ -1,0 +1,17 @@
+theme = "tokyonight"
+
+[editor]
+true-color = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+
+[editor.file-picker]
+hidden = false
+
+[editor.whitespace]
+render = "none"
+
+[keys.insert]
+j = { k = "normal_mode" }
