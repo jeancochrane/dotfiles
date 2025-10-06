@@ -33,6 +33,6 @@ Packages that need to be installed (I should script this installation someday):
 - Tmux: `sudo apt install tmux`
 - Python + pip: `sudo apt install python3-pip`
 - uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- lazygit: https://github.com/jesseduffield/lazygit?tab=readme-ov-file#debian-and-ubuntu
 
-TODO: Install lazygit.
 TODO: Language servers.
