@@ -32,7 +32,10 @@ Packages that need to be installed (I should script this installation someday):
 - Helix: `sudo snap install helix`
 - Tmux: `sudo apt install tmux`
 - Python + pip: `sudo apt install python3-pip`
+- R: `sudo apt install r-base`
+- [Terraform](https://developer.hashicorp.com/terraform/install)
 - uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
 - lazygit: https://github.com/jesseduffield/lazygit?tab=readme-ov-file#debian-and-ubuntu
-
-TODO: Language servers.
+- Language servers:
+  - ruff: `uv tool install ruff`
+  - ty: `uv tool install ty`

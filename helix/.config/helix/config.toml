@@ -1,4 +1,4 @@
-theme = "tokyonight"
+theme = "adwaita-dark"
 
 [editor]
 true-color = true
@@ -15,3 +15,11 @@ render = "none"
 
 [keys.insert]
 j = { k = "normal_mode" }
+
+[keys.normal]
+"$" = "goto_line_end"
+"0" = "goto_line_start"
+
+[keys.select]
+"$" = "goto_line_end"
+"0" = "goto_line_start"
