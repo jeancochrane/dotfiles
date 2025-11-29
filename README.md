@@ -50,6 +50,7 @@ Packages that need to be installed (I should script this installation someday):
   - terraform: `sudo apt install terraform-ls`
     - Assumes Terraform installation step above is complete
 - Various system packages:
-  - libcurl, required for R curl package: `sudo apt install libcurl4-openssl-dev`
-  - libssl, required for R openssl package: `sudo apt install libssl-dev`
-  - libxml2, required for R xml2 package: `sudo apt install libxml2-dev`
+  - `libcurl`, required for R `curl` package: `sudo apt install libcurl4-openssl-dev`
+  - `libssl`, required for R `openssl` package: `sudo apt install libssl-dev`
+  - `libxml2`, required for R `xml2` package: `sudo apt install libxml2-dev`
+  - Geospatial packages required for R `sf` package: `libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
