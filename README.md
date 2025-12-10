@@ -43,8 +43,9 @@ Packages that need to be installed (I should script this installation someday):
       2. Tweak the `deb` entry in sources list to include
          `[arch=amd64 signed-by=/usr/share/keyrings/cran-keyring.gpg]`
 - uv: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-- lazygit: https://github.com/jesseduffield/lazygit?tab=readme-ov-file#debian-and-ubuntu
-- Node: https://nodejs.org/en/download
+- [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#debian-and-ubuntu)
+- [Node](https://nodejs.org/en/download)
+- [Git LFS](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md)
 - Language servers:
   - ruff: `uv tool install ruff`
   - ty: `uv tool install ty`
@@ -57,5 +58,7 @@ Packages that need to be installed (I should script this installation someday):
   - `libssl`, required for R `openssl` package: `sudo apt install libssl-dev`
   - `libxml2`, required for R `xml2` package: `sudo apt install libxml2-dev`
   - `libgit2-dev`, required for R `git2r` package: `sudo apt install libgit2-dev`
+  - `libpoppler-cpp-dev`, required for R `pdftools` package: `sudo apt install libpoppler-cpp-dev`
+  - `default-jdk` (Java Development Kit), required for R `tabulapdf` package: `sudo apt install default-jdk`
   - Geospatial packages required for R `sf` package: `sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
   - Graphic devices (required for tidyverse): `sudo ap install libpng-dev libfontconfig1-dev libfreetype6-dev`
