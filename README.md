@@ -46,6 +46,7 @@ Packages that need to be installed (I should script this installation someday):
 - [lazygit](https://github.com/jesseduffield/lazygit?tab=readme-ov-file#debian-and-ubuntu)
 - [Node](https://nodejs.org/en/download)
 - [Git LFS](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md)
+- `yq`: `sudo snap install yq`
 - Language servers:
   - ruff: `uv tool install ruff`
   - ty: `uv tool install ty`
@@ -61,4 +62,4 @@ Packages that need to be installed (I should script this installation someday):
   - `libpoppler-cpp-dev`, required for R `pdftools` package: `sudo apt install libpoppler-cpp-dev`
   - `default-jdk` (Java Development Kit), required for R `tabulapdf` package: `sudo apt install default-jdk`
   - Geospatial packages required for R `sf` package: `sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
-  - Graphic devices (required for tidyverse): `sudo ap install libpng-dev libfontconfig1-dev libfreetype6-dev`
+  - Graphic devices (required for tidyverse): `sudo apt install libpng-dev libfontconfig1-dev libfreetype6-dev`
