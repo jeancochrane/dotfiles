@@ -23,6 +23,7 @@ directory:
 stow bash
 stow tmux
 stow helix
+stow R
 ```
 
 ## Additional configuration
