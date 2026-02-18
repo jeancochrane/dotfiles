@@ -48,6 +48,7 @@ Packages that need to be installed (I should script this installation someday):
 - [Node](https://nodejs.org/en/download)
 - [Git LFS](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md)
 - `yq`: `sudo snap install yq`
+- `jq`: `sudo apt install jq libjq-dev`
 - Language servers:
   - ruff: `uv tool install ruff`
   - ty: `uv tool install ty`
@@ -62,5 +63,6 @@ Packages that need to be installed (I should script this installation someday):
   - `libgit2-dev`, required for R `git2r` package: `sudo apt install libgit2-dev`
   - `libpoppler-cpp-dev`, required for R `pdftools` package: `sudo apt install libpoppler-cpp-dev`
   - `default-jdk` (Java Development Kit), required for R `tabulapdf` package: `sudo apt install default-jdk`
-  - Geospatial packages required for R `sf` package: `sudo apt install libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
+  - `libprotobuf-dev`, required for R `protolite`: `sudo apt install libprotobuf-dev protobuf-compiler`
+  - Geospatial packages required for R `sf` package: `sudo apt install gdal-bin libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
   - Graphic devices (required for tidyverse): `sudo apt install libpng-dev libfontconfig1-dev libfreetype6-dev`
