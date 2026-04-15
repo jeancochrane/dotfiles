@@ -49,6 +49,18 @@ Packages that need to be installed (I should script this installation someday):
 - [Git LFS](https://github.com/git-lfs/git-lfs/blob/main/INSTALLING.md)
 - `yq`: `sudo snap install yq`
 - `jq`: `sudo apt install jq libjq-dev`
+- `hugo`: `sudo snap install hugo`
+- `quarto`:
+  1. Download `.deb` file from the [official Quarto site](https://quarto.org/docs/download/index.html):
+    - `wget https://<url>`
+  2. Verify that the hash of the `.deb` file matches the has listed on the Quarto site:
+    - `sha256sum <filename.deb>`
+  3. If the hashes match, install the package:
+    - `sudo dpkg -i <filename.deb>`
+    - You'll have to input your WSL user password, which may be the first password you ever set on your laptop
+      if you haven't changed it since you installed WSL
+  4. Remove the file you downloaded:
+    - `rm <filename.deb>`
 - Language servers:
   - ruff: `uv tool install ruff`
   - ty: `uv tool install ty`
