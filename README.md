@@ -50,6 +50,7 @@ Packages that need to be installed (I should script this installation someday):
 - `yq`: `sudo snap install yq`
 - `jq`: `sudo apt install jq libjq-dev`
 - `hugo`: `sudo snap install hugo`
+- `sqlite`: `sudo apt install sqlite3 sqlite3-tools`
 - `quarto`:
   1. Download `.deb` file from the [official Quarto site](https://quarto.org/docs/download/index.html):
     - `wget https://<url>`
