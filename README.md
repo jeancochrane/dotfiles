@@ -80,5 +80,6 @@ Packages that need to be installed (I should script this installation someday):
   - `libprotobuf-dev`, required for R `protolite`: `sudo apt install libprotobuf-dev protobuf-compiler`
   - `libuv1-dev`, required for R `fs` package: `sudo apt install libuv1-dev`
   - `libharfbuzz-dev` and `libfribidi-dev`, required for R `textshaping` package: `sudo apt install libharfbuzz-dev libfribidi-dev`
+  - `libv8-dev`, required for R `jsonvalidate` package via `V8`: `sudo apt install libv8-dev`
   - Geospatial packages required for R `sf` package: `sudo apt install gdal-bin libudunits2-dev libgdal-dev libgeos-dev libproj-dev libsqlite3-dev`
   - Graphic devices (required for tidyverse): `sudo apt install libpng-dev libfontconfig1-dev libfreetype6-dev`
